@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { ArrowUpRight } from "@/lib/icons";
+import type { ProductPartner } from "@/pages/products/productPartners";
 
 const sectionVariants = {
   hidden: {},
@@ -58,6 +60,7 @@ type ProductSectionLayoutProps = {
   imageAlt: string;
   reverse?: boolean;
   imageClassName?: string;
+  partner: ProductPartner;
 };
 
 const ProductSectionLayout = ({
@@ -70,6 +73,7 @@ const ProductSectionLayout = ({
   imageAlt,
   reverse = false,
   imageClassName,
+  partner,
 }: ProductSectionLayoutProps) => {
   return (
     <motion.section
@@ -135,6 +139,42 @@ const ProductSectionLayout = ({
             >
               {details}
             </motion.p>
+
+            <motion.a
+              variants={textItemVariants}
+              href={partner.website}
+              target='_blank'
+              rel='noopener noreferrer'
+              aria-label={`Visit ${partner.name} website`}
+              className='group mt-7 flex flex-col gap-4 rounded-[1.15rem] border border-[#0d62b3]/10 bg-white p-4 shadow-[0_14px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#0d62b3]/25 hover:shadow-[0_20px_42px_rgba(15,23,42,0.1)] sm:flex-row sm:items-center sm:justify-between'
+            >
+              <div className='flex min-w-0 items-center gap-4'>
+                <span className='flex h-16 w-28 flex-shrink-0 items-center justify-center rounded-xl bg-[#f8faf7] px-3 ring-1 ring-[#0b3b12]/8 sm:h-[4.5rem] sm:w-32'>
+                  <img
+                    src={partner.logo}
+                    alt={`${partner.name} logo`}
+                    loading='lazy'
+                    className='max-h-11 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105'
+                  />
+                </span>
+                <span className='min-w-0 text-left'>
+                  <span className='block text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#0d62b3]'>
+                    Technology Partner
+                  </span>
+                  <span className='mt-1 block text-sm font-bold text-[#142318]'>
+                    {partner.name}
+                  </span>
+                  <span className='mt-1 block text-xs leading-5 text-[#5f705f]'>
+                    {partner.focus}
+                  </span>
+                </span>
+              </div>
+
+              <span className='inline-flex items-center justify-center gap-2 rounded-full bg-[#012402] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 group-hover:bg-[#0d62b3]'>
+                Visit
+                <ArrowUpRight className='h-3.5 w-3.5' />
+              </span>
+            </motion.a>
           </div>
         </motion.div>
       </div>

@@ -1,5 +1,6 @@
 import image from "@/assets/home_assets/image10.jpg";
 import ProductSectionLayout from "@/pages/products/ProductSectionLayout";
+import { productPartners } from "@/pages/products/productPartners";
 
 const SafetyHseSection = () => (
   <ProductSectionLayout
@@ -10,6 +11,7 @@ const SafetyHseSection = () => (
     details='This category supports worksite safety programs, compliance-oriented environments, and field operations that rely on protective systems and tools. It strengthens safety culture and operational risk awareness through requirement-based selection, deployment planning, usage guidance, and continued implementation support.'
     image={image}
     imageAlt='Safety and HSE operational equipment'
+    partner={productPartners.cenosco}
     reverse
   />
 );

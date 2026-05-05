@@ -1,5 +1,6 @@
 import image from "@/assets/home_assets/image12.jpg";
 import ProductSectionLayout from "@/pages/products/ProductSectionLayout";
+import { productPartners } from "@/pages/products/productPartners";
 
 const ThermalMonitoringSection = () => (
   <ProductSectionLayout
@@ -10,6 +11,7 @@ const ThermalMonitoringSection = () => (
     details='They are valuable for anomaly detection, condition monitoring, and maintenance diagnostics around critical assets. The benefit is earlier visibility into developing issues and better-informed maintenance planning, supported by solution selection, workflow guidance, and help with operational interpretation.'
     image={image}
     imageAlt='Thermal monitoring and condition assessment'
+    partner={productPartners.pipecare}
   />
 );
 

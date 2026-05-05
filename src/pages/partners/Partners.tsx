@@ -8,7 +8,7 @@ import heroImage from "@/assets/home_assets/image12.jpg";
 
 type LogoItem = {
   name: string;
-  logo: string;
+  logo?: string;
   to: string;
 };
 
@@ -20,17 +20,6 @@ const partnerLogoModules = import.meta.glob(
   },
 ) as Record<string, string>;
 
-const featuredPartnerNames = new Set([
-  "antea",
-  "enppi",
-  "evident",
-  "exertherm",
-  "pipecare",
-  "solar",
-  "spectraflow",
-  "varixx",
-]);
-
 const prettifyPartnerName = (filePath: string) =>
   filePath
     .split("/")
@@ -40,36 +29,69 @@ const prettifyPartnerName = (filePath: string) =>
     .replace(/\s+/g, " ")
     .replace(/\b\w/g, (char) => char.toUpperCase()) ?? "Partner";
 
-const allLogos: LogoItem[] = Object.entries(partnerLogoModules)
-  .sort(([left], [right]) => left.localeCompare(right))
-  .map(([path, logo]) => ({
-    name: prettifyPartnerName(path),
+const logoByKey = Object.fromEntries(
+  Object.entries(partnerLogoModules).map(([path, logo]) => [
+    path
+      .split("/")
+      .pop()
+      ?.replace(/\.[^.]+$/, "")
+      .toLowerCase() ?? "",
     logo,
-    to: "/contact",
-  }));
-
-const groupedLogos = allLogos.reduce(
-  (groups, item) => {
-    const normalizedName = item.name.toLowerCase();
-    const isPartner = [...featuredPartnerNames].some((name) =>
-      normalizedName.includes(name),
-    );
-
-    groups[isPartner ? "partners" : "clients"].push(item);
-    return groups;
-  },
-  { partners: [] as LogoItem[], clients: [] as LogoItem[] },
+  ]),
 );
 
-const partners =
-  groupedLogos.partners.length > 0
-    ? groupedLogos.partners
-    : allLogos.slice(0, Math.ceil(allLogos.length / 3));
+const createLogoItem = (name: string, logoKey?: string): LogoItem => ({
+  name,
+  logo: logoKey ? logoByKey[logoKey.toLowerCase()] : undefined,
+  to: "/contact",
+});
 
-const globalClients =
-  groupedLogos.clients.length > 0
-    ? groupedLogos.clients
-    : allLogos.slice(Math.ceil(allLogos.length / 3));
+const globalClients: LogoItem[] = [
+  createLogoItem("CandidOil", "candidoil"),
+  createLogoItem("AGPC", "agpc"),
+  createLogoItem("Russelsmith", "smith"),
+  createLogoItem("IUM", "ium"),
+  createLogoItem("Dovaheights Energy Limited", "dova"),
+  createLogoItem("Raeburn Oak", "oak"),
+  createLogoItem("Daptem Engineering", "daptem"),
+  createLogoItem("Acetop Energy", "acetop"),
+  createLogoItem("Fadfae Engineering Services Limited", "fad"),
+  createLogoItem("Amparo Engineering", "amparo"),
+  createLogoItem("Mediccy Health & Wellness", "medi"),
+  createLogoItem("MDJ Global Links Limited"),
+  createLogoItem("Darhatshi Engineering Services Limited"),
+  createLogoItem("Tulcan Energy"),
+  createLogoItem("Sanmish"),
+  createLogoItem("SATH"),
+  createLogoItem("ModusLights Technologies"),
+  createLogoItem("Doowe"),
+];
+
+const partners: LogoItem[] = [
+  createLogoItem("Penguin Solutions", "penguin solution"),
+  createLogoItem("Pipecare", "pipecare"),
+  createLogoItem("Quality Esnad"),
+  createLogoItem("Stratus"),
+  createLogoItem("Exertherm", "exertherm"),
+  createLogoItem("Varixx", "varixx"),
+  createLogoItem("BEASY", "beasy"),
+  createLogoItem("ICE International Consultant Engineers", "ice"),
+  createLogoItem("Enppi", "enppi"),
+  createLogoItem("Evident", "evident"),
+  createLogoItem("Antea", "antea"),
+  createLogoItem("APEX-FI"),
+  createLogoItem("MF Satellite", "mf"),
+  createLogoItem("Cryotos", "cryotos"),
+  createLogoItem("Spectraflow Analytics Switzerland", "spectraflow"),
+  createLogoItem("Athena Group", "athena"),
+  createLogoItem("Kingii", "kingii"),
+  createLogoItem("KEM", "kem"),
+  createLogoItem("BLT", "blt"),
+  createLogoItem("Cenosco", "cenosco"),
+  createLogoItem("NHN Solar", "solar"),
+];
+
+const allLogos = [...globalClients, ...partners];
 
 const sectionVariants = {
   hidden: {},
@@ -98,51 +120,72 @@ const LogoCard = ({ item }: { item: LogoItem }) => (
       aria-label={`Contact us about ${item.name}`}
     >
       <div className='flex h-full w-full flex-col items-center justify-center'>
-        <img
-          src={item.logo}
-          alt={`${item.name} logo`}
-          loading='lazy'
-          className='max-h-16 w-auto max-w-[180px] object-contain transition-transform duration-300 group-hover:scale-105 sm:max-h-20 sm:max-w-[210px]'
-        />
-        <span className='mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#607064] opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
-          {item.name}
-        </span>
+        {item.logo ? (
+          <>
+            <img
+              src={item.logo}
+              alt={`${item.name} logo`}
+              loading='lazy'
+              className='max-h-16 w-auto max-w-[180px] object-contain transition-transform duration-300 group-hover:scale-105 sm:max-h-20 sm:max-w-[210px]'
+            />
+            <span className='mt-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#607064] opacity-0 transition-opacity duration-300 group-hover:opacity-100'>
+              {item.name}
+            </span>
+          </>
+        ) : (
+          <span className='max-w-[190px] text-balance text-base font-black uppercase tracking-[0.08em] text-[#18371d] transition-transform duration-300 group-hover:scale-105'>
+            {item.name}
+          </span>
+        )}
       </div>
     </Link>
   </motion.div>
 );
 
-const ClientMarquee = ({ items }: { items: LogoItem[] }) => {
+const MarqueeLogoCard = ({ item }: { item: LogoItem }) => (
+  <Link
+    to={item.to}
+    className='group flex h-28 w-56 shrink-0 items-center justify-center rounded-2xl border border-[#0b3b12]/8 bg-white px-5 text-center shadow-[0_16px_34px_rgba(15,23,42,0.06)] transition-all duration-300 hover:-translate-y-1 hover:border-[#0b3b12]/18 hover:shadow-[0_24px_48px_rgba(15,23,42,0.1)] sm:h-32 sm:w-64'
+    aria-label={`Contact us about ${item.name}`}
+  >
+    {item.logo ? (
+      <img
+        src={item.logo}
+        alt={`${item.name} logo`}
+        loading='lazy'
+        className='max-h-16 w-auto max-w-[180px] object-contain transition-transform duration-300 group-hover:scale-105 sm:max-h-20 sm:max-w-[210px]'
+      />
+    ) : (
+      <span className='max-w-[190px] text-balance text-sm font-black uppercase tracking-[0.08em] text-[#18371d] transition-transform duration-300 group-hover:scale-105'>
+        {item.name}
+      </span>
+    )}
+  </Link>
+);
+
+const PartnerLogoMarquee = ({ items }: { items: LogoItem[] }) => {
   const marqueeItems = [...items, ...items];
 
   return (
-    <div className='relative -mx-4 overflow-hidden py-8 sm:-mx-6 lg:-mx-8'>
-      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#f7f7f3] to-transparent' />
-      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#f7f7f3] to-transparent' />
+    <div className='relative -mx-4 mt-8 overflow-hidden py-4 sm:-mx-6 lg:-mx-8'>
+      <div className='pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-[#f7f7f3] to-transparent sm:w-32' />
+      <div className='pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-[#f7f7f3] to-transparent sm:w-32' />
 
       <motion.div
-        className='flex w-max gap-5'
+        className='flex w-max gap-5 pl-5'
+        initial={{ x: "0%" }}
         animate={{ x: ["0%", "-50%"] }}
         transition={{
-          duration: 58,
+          duration: 46,
           repeat: Infinity,
           ease: "linear",
         }}
       >
-        {marqueeItems.map((item, index) => (
-          <Link
-            key={`${item.name}-${index}`}
-            to={item.to}
-            className='group flex h-28 w-52 shrink-0 items-center justify-center rounded-2xl border border-[#0b3b12]/8 bg-[#f8faf7] px-5 transition-all duration-300 hover:-translate-y-1 hover:bg-white hover:shadow-[0_16px_32px_rgba(15,23,42,0.08)] sm:h-32 sm:w-60'
-            aria-label={`Contact us about ${item.name}`}
-          >
-            <img
-              src={item.logo}
-              alt={`${item.name} logo`}
-              loading='lazy'
-              className='max-h-16 w-auto max-w-[170px] object-contain transition-transform duration-300 group-hover:scale-105 sm:max-h-20 sm:max-w-[200px]'
-            />
-          </Link>
+        {marqueeItems.map((partner, index) => (
+          <MarqueeLogoCard
+            key={`${partner.name}-${index}`}
+            item={partner}
+          />
         ))}
       </motion.div>
     </div>
@@ -291,27 +334,27 @@ const Partners = () => {
             whileInView='visible'
             viewport={{ once: true, amount: 0.2 }}
           >
-            <span className='inline-flex items-center rounded-full border border-[#0b3b12]/10 bg-white px-4 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[#0b3b12] shadow-sm'>
-              Our Partners
+            <span className='inline-flex items-center rounded-full border border-[#0d62b3]/12 bg-white px-4 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[#0d62b3] shadow-sm'>
+              Our Global Clients
             </span>
             <h2 className='mt-4 text-left text-2xl font-bold text-[#122015] sm:text-3xl'>
-              Strategic Partner Network
+              Client Organizations From Your Reference
             </h2>
             <p className='mt-3 max-w-2xl text-sm leading-7 text-[#617064] sm:text-base'>
-              These organizations support our technical capability, delivery
-              capacity, and product ecosystem across the sectors we serve.
+              These are the client organizations shown in the first image,
+              separated from our business partner network.
             </p>
 
-            {filteredPartners.length > 0 ? (
+            {filteredClients.length > 0 ? (
               <div className='mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-                {filteredPartners.map((partner) => (
-                  <LogoCard key={partner.name} item={partner} />
+                {filteredClients.map((client) => (
+                  <LogoCard key={client.name} item={client} />
                 ))}
               </div>
             ) : (
               <div className='mt-8 rounded-[1.5rem] bg-white px-6 py-10 text-center shadow-[0_16px_36px_rgba(15,23,42,0.05)] ring-1 ring-[#0c4010]/6'>
                 <p className='text-lg font-semibold text-[#152118]'>
-                  No partner matched "{query}"
+                  No global client matched "{query}"
                 </p>
               </div>
             )}
@@ -328,28 +371,26 @@ const Partners = () => {
             transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
           >
             <span className='inline-flex items-center rounded-full border border-[#0d62b3]/12 bg-white px-4 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[#0d62b3] shadow-sm'>
-              Our Global Clients
+              Our Business Partners
             </span>
             <h2 className='mt-4 text-left text-2xl font-bold text-[#122015] sm:text-3xl'>
-              Organizations Across Our Market Reach
+              Strategic Partner Network
             </h2>
             <p className='mt-3 max-w-2xl text-sm leading-7 text-[#617064] sm:text-base'>
-              Our client relationships span industries and geographies. The logo
-              rail below moves continuously from right to left for a polished,
-              responsive showcase.
+              These are the partner organizations shown in the second image,
+              supporting our technical capability, delivery capacity, and
+              product ecosystem.
             </p>
 
-            <div className='mt-8'>
-              {filteredClients.length > 0 ? (
-                <ClientMarquee items={filteredClients} />
-              ) : (
-                <div className='rounded-[1.5rem] bg-white px-6 py-10 text-center shadow-[0_16px_36px_rgba(15,23,42,0.05)] ring-1 ring-[#0c4010]/6'>
-                  <p className='text-lg font-semibold text-[#152118]'>
-                    No global client matched "{query}"
-                  </p>
-                </div>
-              )}
-            </div>
+            {filteredPartners.length > 0 ? (
+              <PartnerLogoMarquee items={filteredPartners} />
+            ) : (
+              <div className='mt-8 rounded-[1.5rem] bg-white px-6 py-10 text-center shadow-[0_16px_36px_rgba(15,23,42,0.05)] ring-1 ring-[#0c4010]/6'>
+                <p className='text-lg font-semibold text-[#152118]'>
+                  No business partner matched "{query}"
+                </p>
+              </div>
+            )}
           </motion.div>
         </div>
       </section>

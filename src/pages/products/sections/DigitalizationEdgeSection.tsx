@@ -1,5 +1,6 @@
 import image from "@/assets/home_assets/image11.jpg";
 import ProductSectionLayout from "@/pages/products/ProductSectionLayout";
+import { productPartners } from "@/pages/products/productPartners";
 
 const DigitalizationEdgeSection = () => (
   <ProductSectionLayout
@@ -11,6 +12,7 @@ const DigitalizationEdgeSection = () => (
     image={image}
     imageAlt='Digitalization and edge computing systems'
     imageClassName='lg:h-[360px]'
+    partner={productPartners.penguin}
   />
 );
 

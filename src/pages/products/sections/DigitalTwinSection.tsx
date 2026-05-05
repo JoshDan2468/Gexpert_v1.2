@@ -1,5 +1,6 @@
 import image from "@/assets/home_assets/image12.jpg";
 import ProductSectionLayout from "@/pages/products/ProductSectionLayout";
+import { productPartners } from "@/pages/products/productPartners";
 
 const DigitalTwinSection = () => (
   <ProductSectionLayout
@@ -11,6 +12,7 @@ const DigitalTwinSection = () => (
     image={image}
     imageAlt='Digital twin monitoring and simulation'
     imageClassName='lg:h-[360px]'
+    partner={productPartners.beasy}
     reverse
   />
 );
