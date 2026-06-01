@@ -26,6 +26,29 @@ const companyLinks = [
   { label: "Contact Us", to: "/contact" },
 ] as const;
 
+const positiveSslSealUrl =
+  "https://www.positivessl.com/images/seals/positivessl_trust_seal_md_167x42.png";
+
+const getPositiveSslVerificationUrl = () => {
+  if (typeof window === "undefined") {
+    return "https://www.positivessl.com/the-positivessl-trustlogo";
+  }
+
+  const verificationUrl = new URL(
+    "https://secure.trust-provider.com/ttb_searcher/trustlogo",
+  );
+  verificationUrl.searchParams.set("v_querytype", "W");
+  verificationUrl.searchParams.set("v_shortname", "CL1");
+  verificationUrl.searchParams.set(
+    "v_search",
+    `${window.location.protocol}//${window.location.host}${window.location.pathname}`,
+  );
+  verificationUrl.searchParams.set("x", "6");
+  verificationUrl.searchParams.set("y", "5");
+
+  return verificationUrl.toString();
+};
+
 const CTAFooter = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
@@ -224,7 +247,23 @@ const CTAFooter = () => {
           </div>
 
           <div className='flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-center text-sm text-white/50 md:flex-row md:text-left'>
-            <p>(c) 2026 GExperts Consultoria Limited. All rights reserved.</p>
+            <div className='flex flex-col items-center gap-3 md:items-start'>
+              <a
+                href={getPositiveSslVerificationUrl()}
+                target='_blank'
+                rel='noopener noreferrer'
+                aria-label='Verify Positive SSL certificate'
+                className='inline-flex'
+              >
+                <img
+                  src={positiveSslSealUrl}
+                  alt='Positive SSL Secure'
+                  className='w-40'
+                  loading='lazy'
+                />
+              </a>
+              <p>(c) 2026 GExperts Consultoria Limited. All rights reserved.</p>
+            </div>
             <div className='flex flex-wrap justify-center gap-4 md:justify-end md:gap-6'>
               <a href='#' className='transition-colors hover:text-white'>
                 Privacy Policy

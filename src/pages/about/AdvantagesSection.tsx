@@ -77,44 +77,7 @@ const AdvantagesSection = () => {
           </h2>
         </motion.div>
 
-        <div className='grid gap-6 xl:grid-cols-3'>
-          {leadCards.map((card, index) => {
-            return (
-              <motion.article
-                key={card.title}
-                initial={{ opacity: 0, y: 28 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.22 }}
-                transition={{
-                  delay: index * 0.1,
-                  duration: 1,
-                  ease: [0.22, 1, 0.36, 1],
-                }}
-                className='group relative min-h-[430px] overflow-hidden rounded-[1.8rem] shadow-[0_22px_48px_rgba(15,23,42,0.16)]'
-              >
-                <img
-                  src={card.image}
-                  alt={card.imageAlt}
-                  loading='lazy'
-                  className='absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105'
-                />
-                <div className='absolute inset-0 bg-[linear-gradient(180deg,rgba(9,29,17,0.16)_0%,rgba(4,44,18,0.46)_52%,rgba(2,37,15,0.92)_100%)]' />
-                <div className='absolute inset-x-0 bottom-0 h-28 bg-[linear-gradient(180deg,rgba(3,33,13,0)_0%,rgba(3,33,13,0.66)_100%)]' />
-                <div className='relative flex min-h-[430px] flex-col justify-end p-6 sm:p-7'>
-                  <p className='text-[0.68rem] font-semibold uppercase tracking-[0.28em] text-white/70'>
-                    {card.eyebrow}
-                  </p>
-                  <h3 className='mt-3 text-3xl font-bold leading-tight text-white'>
-                    {card.title}
-                  </h3>
-                  <p className='mt-3 max-w-[18rem] text-base leading-7 text-[#ffffff]'>
-                    {card.text}
-                  </p>
-                </div>
-              </motion.article>
-            );
-          })}
-        </div>
+        {/* Top lead cards removed to avoid overlay on the hero section. */}
 
         <div className='mt-8 grid gap-6 sm:grid-cols-2'>
           {operationalAdvantages.map((item, index) => {

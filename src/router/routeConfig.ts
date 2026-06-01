@@ -1,6 +1,6 @@
 import { lazy, type ComponentType } from "react";
 
-const Home = lazy(() => import("@/pages/Home"));
+const Home = lazy(() => import("@/pages/home/Home"));
 const About = lazy(() => import("@/pages/about/About"));
 const Services = lazy(() => import("@/pages/services/Services"));
 const EngineeringServicesPage = lazy(

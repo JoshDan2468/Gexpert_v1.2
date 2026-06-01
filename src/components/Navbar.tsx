@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ChevronDown } from "@/lib/icons";
 import { Link, useLocation } from "react-router-dom";
@@ -59,7 +59,6 @@ const navLinks: NavLink[] = [
 
 const Navbar = () => {
   const { pathname } = useLocation();
-  const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
@@ -75,44 +74,28 @@ const Navbar = () => {
     );
   };
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
   return (
     <motion.nav
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-lg border-b border-gray-200"
-          : "bg-transparent"
-      }`}
+      className='fixed left-0 right-0 top-0 z-50 border-b border-gray-200 bg-white/95 shadow-lg backdrop-blur-md transition-all duration-300'
     >
       <div className='container mx-auto flex items-center justify-between h-20 px-4 sm:px-6'>
         <Link to='/' className='flex items-center gap-2 sm:gap-3'>
           <img
             src={gexpertLogo}
             alt='Global Experts Consultoria logo'
-            className={`h-10 w-auto rounded-sm object-contain transition-colors sm:h-12 lg:h-14 ${
-              scrolled ? "" : "bg-white/95"
-            }`}
+            className='h-10 w-auto rounded-sm object-contain transition-colors sm:h-12 lg:h-14'
           />
           <div className='flex flex-col gap-1 leading-tight'>
             <span
-              className={`text-[10px] font-bold uppercase tracking-[0.1em] transition-colors sm:text-[11px] lg:text-xs ${
-                scrolled ? "text-[#012402]" : "text-white"
-              }`}
+              className='text-[10px] font-bold uppercase tracking-[0.1em] text-[#012402] transition-colors sm:text-[11px] lg:text-xs'
             >
               Global Expert
             </span>
             <span
-              className={`text-[8px] font-semibold uppercase tracking-[0.14em] transition-colors sm:text-[9px] lg:text-[11px] ${
-                scrolled ? "text-[#012402]/75" : "text-white/75"
-              }`}
+              className='text-[8px] font-semibold uppercase tracking-[0.14em] text-[#012402]/75 transition-colors sm:text-[9px] lg:text-[11px]'
             >
               Consultoria
             </span>
@@ -135,18 +118,14 @@ const Navbar = () => {
               >
                 <Link
                   to={link.to}
-                  className={`px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] transition-colors flex items-center gap-1 relative group ${
-                    scrolled
-                      ? "text-[#012402] hover:text-[#024704]"
-                      : "text-white hover:text-white"
-                  }`}
+                  className='group relative flex items-center gap-1 px-3 py-2 text-[12px] font-semibold uppercase tracking-[0.08em] text-[#012402] transition-colors hover:text-[#024704]'
                 >
                   {link.label}
                   {link.children && <ChevronDown className='w-3 h-3' />}
                   <span
                     className={`absolute bottom-0 left-3 right-3 h-1 origin-left transition-transform ${
                       isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
-                    } ${scrolled ? "bg-[#012402]" : "bg-[#a9f3b1]"}`}
+                    } bg-[#012402]`}
                   />
                 </Link>
 
@@ -185,11 +164,7 @@ const Navbar = () => {
           })}
           <Link
             to='/contact'
-            className={`ml-3 px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.08em] rounded-full transition-all ${
-              scrolled
-                ? "bg-[#012402] text-white hover:bg-[#024704]"
-                : "bg-white text-[#012402] hover:bg-white/90"
-            }`}
+            className='ml-3 rounded-full bg-[#012402] px-5 py-2.5 text-[12px] font-semibold uppercase tracking-[0.08em] text-white transition-all hover:bg-[#024704]'
           >
             Contact
           </Link>
@@ -203,9 +178,7 @@ const Navbar = () => {
           aria-label={
             mobileOpen ? "Close navigation menu" : "Open navigation menu"
           }
-          className={`lg:hidden rounded transition-colors focus:outline-none focus:ring-2 focus:ring-[#012402]/50 ${
-            scrolled ? "text-gray-700" : "text-white"
-          }`}
+          className='rounded text-[#012402] transition-colors focus:outline-none focus:ring-2 focus:ring-[#012402]/50 lg:hidden'
         >
           {mobileOpen ? (
             <X className='w-6 h-6' />

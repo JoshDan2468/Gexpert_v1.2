@@ -128,7 +128,7 @@ const FloatingStats = () => {
   return (
     <section
       ref={sectionRef}
-      className='relative min-h-[440px] overflow-hidden bg-[#012402] py-12 sm:py-14 lg:min-h-[500px]'
+      className='relative min-h-[420px] overflow-hidden bg-[#012402] py-12 sm:py-14 lg:min-h-[500px]'
     >
       <motion.img
         src={statsBackground}

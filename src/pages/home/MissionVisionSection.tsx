@@ -5,7 +5,7 @@ import missionImage from "@/assets/about/mission1.png";
 const items = [
   {
     label: "Our Mission",
-    eyebrow: "What drives us",
+    // eyebrow: "What drives us",
     text: "To provide solutions at highly cost effective, best value and excellent quality that meets clients expectations, coupled with local and international standards and best practices. Clients' satisfaction will be vital.",
     image: missionImage,
     alt: "Mission-focused operational delivery",
@@ -14,7 +14,7 @@ const items = [
   },
   {
     label: "Our Vision",
-    eyebrow: "Where we are going",
+    // eyebrow: "Where we are going",
     text: "To become a leading and referenced consultancy services company in Africa and globally.",
     image: visionImage,
     alt: "Global expansion and long-term vision",
@@ -25,19 +25,16 @@ const items = [
 
 const MissionVisionSection = () => {
   return (
-    <section className='section-padding bg-secondary'>
+    <section className=' pt-10 bg-secondary'>
       <div className='container mx-auto'>
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.25 }}
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          className='mx-auto mb-10 max-w-3xl text-center sm:mb-14'
+          className='mx-auto mb-8 max-w-xl text-center sm:mb-10'
         >
-          <p className='text-sm font-semibold uppercase tracking-[0.28em] text-primary'>
-            Direction & Purpose
-          </p>
-          <h2 className='mt-3 text-4xl font-bold tracking-tight text-foreground sm:text-4xl md:text-5xl'>
+          <h2 className='text-3xl font-bold tracking-tight text-foreground sm:text-4xl md:text-[2.45rem]'>
             The mission and vision behind our work
           </h2>
         </motion.div>
@@ -57,12 +54,12 @@ const MissionVisionSection = () => {
               className='grid lg:grid-cols-2'
             >
               <div
-                className={`flex min-h-[320px] items-center px-8 py-12 text-white sm:min-h-[380px] sm:px-14 lg:min-h-[430px] lg:px-20 ${item.textPanelClass} ${item.imageFirstDesktop ? "lg:order-2" : ""}`}
+                className={`flex min-h-[220px] items-center px-6 py-8 text-white sm:min-h-[280px] sm:px-8 lg:min-h-[320px] lg:px-10 ${item.textPanelClass} ${item.imageFirstDesktop ? "lg:order-2" : ""}`}
               >
                 <div className='max-w-md'>
-                  <p className='text-left text-sm font-semibold uppercase tracking-[0.22em] text-white/80'>
+                  {/* <p className='text-left text-sm font-semibold uppercase tracking-[0.22em] text-white/80'>
                     {item.eyebrow}
-                  </p>
+                  </p> */}
                   <h3 className='mt-3 text-left text-4xl font-black uppercase tracking-tight text-white sm:text-5xl'>
                     {item.label}
                   </h3>
@@ -73,13 +70,13 @@ const MissionVisionSection = () => {
               </div>
 
               <div
-                className={`flex min-h-[320px] items-center justify-center bg-white px-10 py-12 sm:min-h-[380px] lg:min-h-[430px] ${item.imageFirstDesktop ? "lg:order-1" : ""}`}
+                className={`flex min-h-[240px] items-center justify-center bg-white px-6 py-8 sm:min-h-[280px] sm:px-8 lg:min-h-[320px] lg:px-10 ${item.imageFirstDesktop ? "lg:order-1" : ""}`}
               >
                 <img
                   src={item.image}
                   alt={item.alt}
                   loading='lazy'
-                  className='max-h-[260px] w-full max-w-[300px] object-contain mix-blend-multiply sm:max-h-[320px] sm:max-w-[380px] lg:max-h-[360px] lg:max-w-[440px]'
+                  className='max-h-[220px] w-full max-w-[280px] object-contain mix-blend-multiply sm:max-h-[260px] sm:max-w-[340px] lg:max-h-[280px] lg:max-w-[360px]'
                 />
               </div>
             </motion.article>
