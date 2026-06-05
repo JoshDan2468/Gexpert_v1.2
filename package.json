@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "vite",
     "build": "npx vite build",
+    "postbuild": "node scripts/copy-404.cjs",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d dist",
     "build:dev": "vite build --mode development",
