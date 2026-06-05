@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import heroImage from "@/assets/services/pipe.jpg";
+import heroImage from "@/assets/home_assets/image10.jpg";
 
-const ServicesHero = () => (
+const ProductsHero = () => (
   <section className='grid min-h-[430px] pt-20 lg:grid-cols-[0.8fr_1.2fr]'>
     <div className='flex items-center bg-[#012402] px-6 py-16 sm:px-10 lg:px-16'>
       <motion.div
@@ -12,7 +12,7 @@ const ServicesHero = () => (
         className='max-w-xl'
       >
         <h1 className='text-left text-4xl font-black leading-[1.18] text-white sm:text-5xl lg:text-[3.4rem]'>
-          Trusted Expertise in Our Services
+          Trusted Products for Technical Operations
         </h1>
         <div className='mt-7 flex flex-wrap gap-4'>
           <Link
@@ -21,19 +21,19 @@ const ServicesHero = () => (
           >
             Contact Us
           </Link>
-          <Link
-            to='/about'
+          <a
+            href='#digitalization-edge'
             className='inline-flex items-center justify-center rounded-md bg-white px-5 py-3 text-sm font-bold text-[#012402] transition-colors hover:bg-[#a9f3b1]'
           >
-            About Us
-          </Link>
+            View Products
+          </a>
         </div>
       </motion.div>
     </div>
     <div className='relative min-h-[300px] overflow-hidden lg:min-h-[430px]'>
       <img
         src={heroImage}
-        alt='Industrial offshore service environment'
+        alt='Industrial products and technical equipment'
         className='absolute inset-0 h-full w-full object-cover'
         loading='eager'
         decoding='async'
@@ -44,4 +44,4 @@ const ServicesHero = () => (
   </section>
 );
 
-export default ServicesHero;
+export default ProductsHero;

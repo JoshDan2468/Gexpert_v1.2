@@ -7,33 +7,65 @@ import gexpertLogo from "@/assets/gexpet logo.jpeg";
 type NavLink = {
   label: string;
   to: string;
-  children?: Array<{ label: string; to: string }>;
+  children?: NavLink[];
 };
 
 const serviceLinks = [
   {
-    label: "Engineering Services",
+    label: "Asset Integrity and Management",
     to: "/services/engineering-services",
+    children: [
+      {
+        label: "Engineering Services",
+        to: "/services/engineering-services",
+      },
+      {
+        label: "Oil and Gas Management",
+        to: "/services/oil-gas-management",
+      },
+      {
+        label: "Business Advisory",
+        to: "/services/business-processes",
+      },
+    ],
   },
   {
-    label: "Business Processes",
-    to: "/services/business-processes",
+    label: "Project Management and Services",
+    to: "/services/project-management-execution",
+    children: [
+      {
+        label: "SAAS Solutions",
+        to: "/services/project-management-execution",
+      },
+      {
+        label: "Thermel Monitoring",
+        to: "/services/project-management-execution",
+      },
+      {
+        label: "Values & Flowmeters",
+        to: "/services/project-management-execution",
+      },
+    ],
   },
   {
     label: "Research & Development",
     to: "/services/research-development",
+    children: [
+      {
+        label: "Engineering Research & Development",
+        to: "/services/research-development",
+      },
+    ],
   },
   {
-    label: "Research and Market Intelligence",
+    label: "Local Insight",
     to: "/services/research-market-intelligence",
-  },
-  {
-    label: "Oil and Gas Management",
-    to: "/services/oil-gas-management",
-  },
-  {
-    label: "Project Management and Execution",
-    to: "/services/project-management-execution",
+    children: [
+      {
+        label: "Research and Market Intelligence",
+        to: "/services/research-market-intelligence",
+      },
+    ],
   },
 ] as const;
 
@@ -61,17 +93,35 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const [activeServiceGroup, setActiveServiceGroup] = useState<string | null>(
+    null,
+  );
 
   const isActiveLink = (link: NavLink) => {
     if (link.to === "/") {
       return pathname === "/";
     }
 
+    const hasActiveChild = (items?: NavLink[]): boolean =>
+      Boolean(
+        items?.some(
+          (child) =>
+            pathname === child.to ||
+            pathname.startsWith(`${child.to}/`) ||
+            hasActiveChild(child.children),
+        ),
+      );
+
     return (
       pathname === link.to ||
       pathname.startsWith(`${link.to}/`) ||
-      Boolean(link.children?.some((child) => pathname === child.to))
+      hasActiveChild(link.children)
     );
+  };
+
+  const closeDropdowns = () => {
+    setActiveDropdown(null);
+    setActiveServiceGroup(null);
   };
 
   return (
@@ -114,7 +164,7 @@ const Navbar = () => {
                 onMouseEnter={() =>
                   link.children && setActiveDropdown(link.label)
                 }
-                onMouseLeave={() => setActiveDropdown(null)}
+                onMouseLeave={closeDropdowns}
               >
                 <Link
                   to={link.to}
@@ -136,24 +186,70 @@ const Navbar = () => {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 8 }}
                       transition={{ duration: 0.2 }}
-                      className='absolute top-full left-0 mt-1 w-72 bg-white rounded-lg shadow-xl border border-[#012402]/10 overflow-hidden'
+                      className='absolute top-full left-0 mt-1 w-80 rounded-lg border border-[#012402]/10 bg-white shadow-xl'
                     >
                       {link.children.map((child) => {
-                        const isChildActive = pathname === child.to;
+                        const isChildActive = isActiveLink(child);
+                        const hasNestedChildren = Boolean(
+                          child.children?.length,
+                        );
 
                         return (
-                          <Link
+                          <div
                             key={child.label}
-                            to={child.to}
-                            onClick={() => setActiveDropdown(null)}
-                            className={`block px-5 py-3 text-sm transition-colors ${
-                              isChildActive
-                                ? "bg-[#012402] text-[#a9f3b1]"
-                                : "text-[#012402] hover:bg-[#012402] hover:text-white"
-                            }`}
+                            className='relative'
+                            onMouseEnter={() =>
+                              setActiveServiceGroup(child.label)
+                            }
                           >
-                            {child.label}
-                          </Link>
+                            <Link
+                              to={child.to}
+                              onClick={closeDropdowns}
+                              className={`flex items-center justify-between gap-3 px-5 py-3 text-sm transition-colors ${
+                                isChildActive
+                                  ? "bg-[#012402] text-[#a9f3b1]"
+                                  : "text-[#012402] hover:bg-[#012402] hover:text-white"
+                              }`}
+                            >
+                              <span>{child.label}</span>
+                              {hasNestedChildren && (
+                                <ChevronDown className='h-3.5 w-3.5 -rotate-90' />
+                              )}
+                            </Link>
+
+                            <AnimatePresence>
+                              {hasNestedChildren &&
+                                activeServiceGroup === child.label && (
+                                  <motion.div
+                                    initial={{ opacity: 0, x: 8 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: 8 }}
+                                    transition={{ duration: 0.18 }}
+                                    className='absolute left-full top-0 ml-1 w-80 overflow-hidden rounded-lg border border-[#012402]/10 bg-white shadow-xl'
+                                  >
+                                    {child.children?.map((nestedChild) => {
+                                      const isNestedChildActive =
+                                        pathname === nestedChild.to;
+
+                                      return (
+                                        <Link
+                                          key={nestedChild.label}
+                                          to={nestedChild.to}
+                                          onClick={closeDropdowns}
+                                          className={`block px-5 py-3 text-sm transition-colors ${
+                                            isNestedChildActive
+                                              ? "bg-[#012402] text-[#a9f3b1]"
+                                              : "text-[#012402] hover:bg-[#012402] hover:text-white"
+                                          }`}
+                                        >
+                                          {nestedChild.label}
+                                        </Link>
+                                      );
+                                    })}
+                                  </motion.div>
+                                )}
+                            </AnimatePresence>
+                          </div>
                         );
                       })}
                     </motion.div>
@@ -202,18 +298,50 @@ const Navbar = () => {
                 const isActive = isActiveLink(link);
 
                 return (
-                  <Link
-                    key={link.label}
-                    to={link.to}
-                    onClick={() => setMobileOpen(false)}
-                    className={`block py-3 text-[12px] font-semibold uppercase tracking-[0.08em] transition-colors ${
-                      isActive
-                        ? "text-[#012402]"
-                        : "text-[#012402]/70 hover:text-[#012402]"
-                    }`}
-                  >
-                    {link.label}
-                  </Link>
+                  <div key={link.label}>
+                    <Link
+                      to={link.to}
+                      onClick={() => setMobileOpen(false)}
+                      className={`block py-3 text-[12px] font-semibold uppercase tracking-[0.08em] transition-colors ${
+                        isActive
+                          ? "text-[#012402]"
+                          : "text-[#012402]/70 hover:text-[#012402]"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+
+                    {link.children && (
+                      <div className='border-l border-[#012402]/15 pl-4'>
+                        {link.children.map((child) => (
+                          <div key={child.label}>
+                            <Link
+                              to={child.to}
+                              onClick={() => setMobileOpen(false)}
+                              className='block py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#012402]/80 transition-colors hover:text-[#012402]'
+                            >
+                              {child.label}
+                            </Link>
+
+                            {child.children && (
+                              <div className='border-l border-[#012402]/10 pl-4'>
+                                {child.children.map((nestedChild) => (
+                                  <Link
+                                    key={nestedChild.label}
+                                    to={nestedChild.to}
+                                    onClick={() => setMobileOpen(false)}
+                                    className='block py-2 text-sm text-[#012402]/70 transition-colors hover:text-[#012402]'
+                                  >
+                                    {nestedChild.label}
+                                  </Link>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
               <Link

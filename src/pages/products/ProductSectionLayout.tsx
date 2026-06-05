@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight } from "@/lib/icons";
+import { Link } from "react-router-dom";
 import type { ProductPartner } from "@/pages/products/productPartners";
 
 const sectionVariants = {
@@ -50,7 +50,7 @@ const textItemVariants = {
   },
 };
 
-type ProductSectionLayoutProps = {
+export type ProductSectionLayoutProps = {
   id: string;
   title: string;
   short: string;
@@ -60,7 +60,8 @@ type ProductSectionLayoutProps = {
   imageAlt: string;
   reverse?: boolean;
   imageClassName?: string;
-  partner: ProductPartner;
+  partner?: ProductPartner;
+  partners?: ProductPartner[];
 };
 
 const ProductSectionLayout = ({
@@ -74,7 +75,10 @@ const ProductSectionLayout = ({
   reverse = false,
   imageClassName,
   partner,
+  partners,
 }: ProductSectionLayoutProps) => {
+  const visiblePartners = partners ?? (partner ? [partner] : []);
+
   return (
     <motion.section
       id={id}
@@ -82,16 +86,16 @@ const ProductSectionLayout = ({
       initial='hidden'
       whileInView='visible'
       viewport={{ once: true, amount: 0.2 }}
-      className='scroll-mt-28 border-t border-[#d7e0d8] bg-white'
+      className='scroll-mt-28 bg-[#f5f5f2] px-4 py-3 sm:px-6 sm:py-4 lg:px-8'
     >
       <div
-        className={`grid items-stretch lg:grid-cols-[1.05fr_0.95fr] ${
+        className={`mx-auto grid max-w-6xl items-stretch overflow-hidden rounded-lg bg-white shadow-[0_12px_26px_rgba(15,23,42,0.05)] lg:grid-cols-[0.78fr_1.22fr] ${
           reverse ? "lg:[&>*:first-child]:order-2 lg:[&>*:last-child]:order-1" : ""
         }`}
       >
         <motion.div
           variants={reverse ? imageVariantsReverse : imageVariants}
-          className={`relative min-h-[260px] overflow-hidden bg-[#dfe7ee] sm:min-h-[320px] lg:min-h-full ${
+          className={`relative min-h-[150px] overflow-hidden bg-[#dfe7ee] sm:min-h-[180px] lg:min-h-full ${
             imageClassName ?? ""
           }`}
         >
@@ -108,73 +112,60 @@ const ProductSectionLayout = ({
 
         <motion.div
           variants={textGroupVariants}
-          className='flex items-center bg-[#f5f5f2] px-6 py-8 sm:px-8 sm:py-10 lg:min-h-[420px] lg:px-12 lg:py-12'
+          className='flex items-center bg-white px-5 py-4 sm:px-6 sm:py-5 lg:px-7 lg:py-5'
         >
-          <div className='mx-auto w-full max-w-xl overflow-hidden'>
+          <div className='mx-auto w-full max-w-2xl overflow-hidden'>
             <motion.h2
               variants={textItemVariants}
-              className='text-left text-3xl font-bold uppercase tracking-[0.04em] text-[#0d62b3] sm:text-4xl'
+              className='text-left text-lg font-black uppercase tracking-[0.04em] text-[#0d62b3] sm:text-xl'
             >
               {title}
             </motion.h2>
             <motion.p
               variants={textItemVariants}
-              className='mt-4 text-left text-xs font-semibold uppercase tracking-[0.18em] text-[#012402]/65'
+              className='mt-1.5 text-left text-[0.68rem] font-semibold uppercase tracking-[0.16em] text-[#012402]/65'
             >
               {short}
             </motion.p>
             <motion.div
               variants={textItemVariants}
-              className='mt-5 h-px w-16 bg-[#0d62b3]/25'
+              className='mt-2.5 h-px w-12 bg-[#0d62b3]/25'
             />
             <motion.p
               variants={textItemVariants}
-              className='mt-6 max-w-lg text-left text-[0.94rem] leading-7 text-[#27372a]'
+              className='mt-3 max-w-xl text-left text-[0.82rem] leading-5 text-[#27372a]'
             >
               {summary}
             </motion.p>
             <motion.p
               variants={textItemVariants}
-              className='mt-4 max-w-lg text-left text-[0.94rem] leading-7 text-[#27372a]'
+              className='mt-2.5 max-w-xl text-left text-[0.82rem] leading-5 text-[#27372a]'
             >
               {details}
             </motion.p>
 
-            <motion.a
-              variants={textItemVariants}
-              href={partner.website}
-              target='_blank'
-              rel='noopener noreferrer'
-              aria-label={`Visit ${partner.name} website`}
-              className='group mt-7 flex flex-col gap-4 rounded-[1.15rem] border border-[#0d62b3]/10 bg-white p-4 shadow-[0_14px_30px_rgba(15,23,42,0.05)] transition-all duration-300 hover:-translate-y-1 hover:border-[#0d62b3]/25 hover:shadow-[0_20px_42px_rgba(15,23,42,0.1)] sm:flex-row sm:items-center sm:justify-between'
-            >
-              <div className='flex min-w-0 items-center gap-4'>
-                <span className='flex h-16 w-28 flex-shrink-0 items-center justify-center rounded-xl bg-[#f8faf7] px-3 ring-1 ring-[#0b3b12]/8 sm:h-[4.5rem] sm:w-32'>
-                  <img
-                    src={partner.logo}
-                    alt={`${partner.name} logo`}
-                    loading='lazy'
-                    className='max-h-11 w-auto max-w-full object-contain transition-transform duration-300 group-hover:scale-105'
-                  />
-                </span>
-                <span className='min-w-0 text-left'>
-                  <span className='block text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[#0d62b3]'>
-                    Technology Partner
-                  </span>
-                  <span className='mt-1 block text-sm font-bold text-[#142318]'>
-                    {partner.name}
-                  </span>
-                  <span className='mt-1 block text-xs leading-5 text-[#5f705f]'>
-                    {partner.focus}
-                  </span>
-                </span>
-              </div>
-
-              <span className='inline-flex items-center justify-center gap-2 rounded-full bg-[#012402] px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em] text-white transition-colors duration-300 group-hover:bg-[#0d62b3]'>
-                Visit
-                <ArrowUpRight className='h-3.5 w-3.5' />
-              </span>
-            </motion.a>
+            {visiblePartners.length > 0 && (
+              <motion.div variants={textItemVariants} className='mt-3'>
+                <div className='flex flex-wrap gap-2.5'>
+                  {visiblePartners.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={`/contact?product=${encodeURIComponent(title)}&partner=${encodeURIComponent(item.name)}`}
+                      aria-label={`Contact us about ${item.name} for ${title}`}
+                      title={`Contact us about ${item.name}`}
+                      className='group flex h-14 w-24 items-center justify-center rounded-md border border-[#0d62b3]/10 bg-[#f8faf7] px-2.5 shadow-[0_6px_14px_rgba(15,23,42,0.04)] transition-all duration-300 hover:-translate-y-0.5 hover:border-[#0d62b3]/25 hover:shadow-[0_10px_22px_rgba(15,23,42,0.08)]'
+                    >
+                      <img
+                        src={item.logo}
+                        alt={`${item.name} logo`}
+                        loading='lazy'
+                        className='max-h-10 max-w-full object-contain transition-transform duration-300 group-hover:scale-105'
+                      />
+                    </Link>
+                  ))}
+                </div>
+              </motion.div>
+            )}
           </div>
         </motion.div>
       </div>

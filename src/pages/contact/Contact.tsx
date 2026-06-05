@@ -1,5 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
+import { useLocation } from "react-router-dom";
 import {
   Facebook,
   Instagram,
@@ -116,6 +117,23 @@ const itemVariants = {
 const Contact = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
+  const location = useLocation();
+  const contactParams = new URLSearchParams(location.search);
+  const productInterest = contactParams.get("product");
+  const partnerInterest = contactParams.get("partner");
+  const hasProductPartnerInterest = Boolean(productInterest || partnerInterest);
+  const inquirySubject =
+    productInterest && partnerInterest
+      ? `Partner inquiry: ${partnerInterest} for ${productInterest}`
+      : productInterest
+        ? `Product inquiry: ${productInterest}`
+        : "";
+  const inquiryMessage =
+    productInterest && partnerInterest
+      ? `I would like to speak with your team about ${partnerInterest} for ${productInterest}.`
+      : productInterest
+        ? `I would like to speak with your team about ${productInterest}.`
+        : "";
 
   return (
     <main className='overflow-x-hidden bg-white'>
@@ -354,6 +372,13 @@ const Contact = () => {
               </h3>
 
               <form className='space-y-6'>
+                {hasProductPartnerInterest && (
+                  <div className='rounded-lg border border-[#d9bf73]/40 bg-[#fff8e6] px-4 py-3 text-sm leading-6 text-[#27312c]'>
+                    {partnerInterest && productInterest
+                      ? `Inquiry source: ${partnerInterest} partner request for ${productInterest}.`
+                      : `Inquiry source: ${productInterest ?? partnerInterest}.`}
+                  </div>
+                )}
                 <div className='grid gap-4 sm:grid-cols-2'>
                   <div>
                     <input
@@ -386,6 +411,7 @@ const Contact = () => {
                   <input
                     type='text'
                     placeholder='Subject'
+                    defaultValue={inquirySubject}
                     className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d9bf73] focus:border-transparent outline-none transition-all'
                     required
                   />
@@ -395,6 +421,7 @@ const Contact = () => {
                   <textarea
                     placeholder='Your Message'
                     rows={5}
+                    defaultValue={inquiryMessage}
                     className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#d9bf73] focus:border-transparent outline-none transition-all resize-none'
                     required
                   />

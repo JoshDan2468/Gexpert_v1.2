@@ -49,80 +49,86 @@ const getPositiveSslVerificationUrl = () => {
   return verificationUrl.toString();
 };
 
-const CTAFooter = () => {
+type CTAFooterProps = {
+  showCta?: boolean;
+};
+
+const CTAFooter = ({ showCta = true }: CTAFooterProps) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <>
-      <section
-        id='contact'
-        className='relative overflow-hidden bg-[#012402] py-16 sm:py-20'
-        ref={ref}
-      >
-        <div className='absolute inset-0'>
-          <motion.img
-            src={ctaBackground}
-            alt=''
-            aria-hidden='true'
-            className='h-full w-full object-cover'
-            initial={{ scale: 1.08 }}
-            animate={inView ? { scale: 1.01 } : { scale: 1.08 }}
-            transition={{ duration: 4.5, ease: [0.22, 1, 0.36, 1] }}
-          />
-          <div className='absolute inset-0 bg-[linear-gradient(115deg,rgba(1,36,2,0.94)_0%,rgba(1,36,2,0.82)_42%,rgba(12,107,47,0.62)_100%)]' />
-          <div className='absolute inset-0 bg-black/20' />
-        </div>
-        <div className='absolute inset-0 opacity-20'>
-          <div className='absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d8b84f] blur-3xl sm:h-[800px] sm:w-[800px]' />
-        </div>
-        <div className='container relative z-10 mx-auto px-4 text-center sm:px-6 lg:px-8'>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={inView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <h2 className='mb-6 text-3xl font-bold leading-tight text-white drop-shadow-sm md:text-5xl'>
-              Ready to Start Your
-              <br />
-              <span className='text-[#f1d36b]'>Next Project?</span>
-            </h2>
-            <p className='mx-auto mb-10 max-w-xl text-base leading-8 text-white/82 sm:text-lg'>
-              Partner with Global Experts Consultoria and leverage our
-              multi-discipline expertise to deliver exceptional results across
-              industries.
-            </p>
+      {showCta && (
+        <section
+          id='contact'
+          className='relative overflow-hidden bg-[#012402] py-16 sm:py-20'
+          ref={ref}
+        >
+          <div className='absolute inset-0'>
+            <motion.img
+              src={ctaBackground}
+              alt=''
+              aria-hidden='true'
+              className='h-full w-full object-cover'
+              initial={{ scale: 1.08 }}
+              animate={inView ? { scale: 1.01 } : { scale: 1.08 }}
+              transition={{ duration: 4.5, ease: [0.22, 1, 0.36, 1] }}
+            />
+            <div className='absolute inset-0 bg-[linear-gradient(115deg,rgba(1,36,2,0.94)_0%,rgba(1,36,2,0.82)_42%,rgba(12,107,47,0.62)_100%)]' />
+            <div className='absolute inset-0 bg-black/20' />
+          </div>
+          <div className='absolute inset-0 opacity-20'>
+            <div className='absolute left-1/2 top-1/2 h-[520px] w-[520px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#d8b84f] blur-3xl sm:h-[800px] sm:w-[800px]' />
+          </div>
+          <div className='container relative z-10 mx-auto px-4 text-center sm:px-6 lg:px-8'>
             <motion.div
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
-              transition={{
-                delay: 0.12,
-                duration: 0.8,
-                ease: [0.22, 1, 0.36, 1],
-              }}
-              className='flex flex-col items-center justify-center gap-4 sm:flex-row'
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
             >
-              <motion.a
-                href='mailto:info@globalexpertsconsultoria.com'
-                whileHover={{ y: -2, scale: 1.01 }}
-                transition={{ duration: 0.25 }}
-                className='inline-flex items-center justify-center gap-2 rounded-lg bg-[#f1d36b] px-8 py-4 text-center font-semibold text-[#012402] shadow-[0_18px_35px_rgba(0,0,0,0.22)] transition-all hover:bg-[#ffe28a]'
+              <h2 className='mb-6 text-3xl font-bold leading-tight text-white drop-shadow-sm md:text-5xl'>
+                Ready to Start Your
+                <br />
+                <span className='text-[#f1d36b]'>Next Project?</span>
+              </h2>
+              <p className='mx-auto mb-10 max-w-xl text-base leading-8 text-white/82 sm:text-lg'>
+                Partner with Global Experts Consultoria and leverage our
+                multi-discipline expertise to deliver exceptional results across
+                industries.
+              </p>
+              <motion.div
+                initial={{ opacity: 0, y: 18 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{
+                  delay: 0.12,
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
+                }}
+                className='flex flex-col items-center justify-center gap-4 sm:flex-row'
               >
-                Start a Conversation
-                <ArrowRight className='h-4 w-4' />
-              </motion.a>
-              <motion.a
-                href='tel:+2348068970938'
-                whileHover={{ y: -2, scale: 1.01 }}
-                transition={{ duration: 0.25 }}
-                className='inline-flex items-center justify-center rounded-lg border border-white/55 bg-white/10 px-8 py-4 text-center font-semibold text-white shadow-[0_18px_35px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all hover:border-[#f1d36b] hover:bg-[#f1d36b]/15 hover:text-[#fff4c4]'
-              >
-                Call Us Now
-              </motion.a>
+                <motion.a
+                  href='mailto:info@globalexpertsconsultoria.com'
+                  whileHover={{ y: -2, scale: 1.01 }}
+                  transition={{ duration: 0.25 }}
+                  className='inline-flex items-center justify-center gap-2 rounded-lg bg-[#f1d36b] px-8 py-4 text-center font-semibold text-[#012402] shadow-[0_18px_35px_rgba(0,0,0,0.22)] transition-all hover:bg-[#ffe28a]'
+                >
+                  Start a Conversation
+                  <ArrowRight className='h-4 w-4' />
+                </motion.a>
+                <motion.a
+                  href='tel:+2348068970938'
+                  whileHover={{ y: -2, scale: 1.01 }}
+                  transition={{ duration: 0.25 }}
+                  className='inline-flex items-center justify-center rounded-lg border border-white/55 bg-white/10 px-8 py-4 text-center font-semibold text-white shadow-[0_18px_35px_rgba(0,0,0,0.18)] backdrop-blur-sm transition-all hover:border-[#f1d36b] hover:bg-[#f1d36b]/15 hover:text-[#fff4c4]'
+                >
+                  Call Us Now
+                </motion.a>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
 
       <footer className='bg-[#012402] px-6 py-16'>
         <div className='container mx-auto'>
