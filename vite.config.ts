@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 export default defineConfig({
-  base: "/globalexpert_website/",
+  base: process.env.VERCEL ? "/" : "/globalexpert_website/",
   plugins: [react()],
   resolve: {
     alias: {

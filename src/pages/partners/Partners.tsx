@@ -1,6 +1,6 @@
 import { useDeferredValue, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Handshake, Mail, Search, X } from "@/lib/icons";
+import { ArrowRight, Mail, Search, X } from "@/lib/icons";
 import { Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import CTAFooter from "@/pages/home/CTAFooter";
@@ -222,64 +222,43 @@ const Partners = () => {
     <main className='overflow-x-hidden bg-[#f7f7f3]'>
       <Navbar />
 
-      <section className='relative isolate overflow-hidden px-4 pb-16 pt-28 sm:px-6 sm:pb-20 sm:pt-32 lg:px-8 lg:pb-24'>
-        <div className='absolute inset-0'>
-          <motion.img
-            src={heroImage}
-            alt=''
-            aria-hidden='true'
-            className='h-full w-full object-cover'
-            animate={{
-              scale: [1, 1.05, 1.02, 1],
-              x: [0, 12, -10, 0],
-              y: [0, -8, 14, 0],
-            }}
-            transition={{
-              duration: 24,
-              repeat: Infinity,
-              repeatType: "mirror",
-              ease: "easeInOut",
-            }}
-          />
-          <div className='absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(169,243,177,0.14),transparent_30%),linear-gradient(135deg,rgba(255,255,255,0.05),transparent_45%),linear-gradient(180deg,rgba(1,36,2,0.8)_0%,rgba(1,36,2,0.92)_100%)]' />
-        </div>
-
-        <div className='relative z-10 container mx-auto max-w-6xl'>
+      <section className='grid min-h-[430px] pt-20 lg:grid-cols-[0.8fr_1.2fr]'>
+        <div className='flex items-center bg-[#012402] px-6 py-16 sm:px-10 lg:px-16'>
           <motion.div
-            initial={{ opacity: 0, y: 22 }}
+            initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-            className='max-w-3xl text-white'
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+            className='max-w-xl'
           >
-            <span className='inline-flex items-center rounded-full border border-white/14 bg-white/8 px-4 py-2 text-[0.66rem] font-semibold uppercase tracking-[0.3em] text-[#d7efda] backdrop-blur-sm'>
-              Our Network
-            </span>
-            <h1 className='mt-5 text-left text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl'>
+            <h1 className='text-left text-4xl font-black leading-[1.18] text-white sm:text-5xl lg:text-[3.4rem]'>
               Our Partners & Global Clients
             </h1>
-            <p className='mt-4 max-w-2xl text-sm leading-7 text-white/78 sm:text-base'>
-              We work with trusted technical partners and serve clients across
-              multiple markets. Explore our collaboration network and global
-              client relationships below.
-            </p>
-
-            <div className='mt-7 flex flex-wrap gap-3'>
+            <div className='mt-7 flex flex-wrap gap-4'>
               <a
                 href='#partners'
-                className='inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-[#102313] transition-transform duration-300 hover:-translate-y-0.5'
+                className='inline-flex items-center justify-center rounded-md bg-white px-5 py-3 text-sm font-bold text-[#012402] transition-colors hover:bg-[#a9f3b1]'
               >
                 View Network
-                <ArrowRight className='h-3.5 w-3.5' />
               </a>
               <Link
                 to='/contact'
-                className='inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/8 px-5 py-3 text-[11px] font-semibold uppercase tracking-[0.12em] text-white backdrop-blur-sm transition-colors duration-300 hover:bg-white/14'
+                className='inline-flex items-center justify-center rounded-md bg-white px-5 py-3 text-sm font-bold text-[#012402] transition-colors hover:bg-[#a9f3b1]'
               >
                 Become a Partner
-                <Handshake className='h-3.5 w-3.5' />
               </Link>
             </div>
           </motion.div>
+        </div>
+        <div className='relative min-h-[300px] overflow-hidden lg:min-h-[430px]'>
+          <img
+            src={heroImage}
+            alt='Professional partner collaboration meeting'
+            className='absolute inset-0 h-full w-full object-cover'
+            loading='eager'
+            decoding='async'
+            data-lcp='true'
+          />
+          <div className='absolute inset-0 bg-white/5' />
         </div>
       </section>
 

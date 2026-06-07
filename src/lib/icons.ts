@@ -9,6 +9,7 @@ export {
   Menu,
   X,
   ChevronDown,
+  ChevronRight,
   Cpu,
   Droplets,
   Factory,

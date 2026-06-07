@@ -4,22 +4,22 @@ const Home = lazy(() => import("@/pages/home/Home"));
 const About = lazy(() => import("@/pages/about/About"));
 const Services = lazy(() => import("@/pages/services/Services"));
 const EngineeringServicesPage = lazy(
-  () => import("@/pages/services/details/EngineeringServicesPage"),
+  () => import("@/pages/services/details/engineering-services/EngineeringServicesPage"),
 );
 const BusinessProcessesPage = lazy(
-  () => import("@/pages/services/details/BusinessProcessesPage"),
+  () => import("@/pages/services/details/business-processes/BusinessProcessesPage"),
 );
 const ResearchDevelopmentPage = lazy(
-  () => import("@/pages/services/details/ResearchDevelopmentPage"),
+  () => import("@/pages/services/details/research-development/ResearchDevelopmentPage"),
 );
 const ResearchMarketIntelligencePage = lazy(
-  () => import("@/pages/services/details/ResearchMarketIntelligencePage"),
+  () => import("@/pages/services/details/research-market-intelligence/ResearchMarketIntelligencePage"),
 );
 const OilGasManagementPage = lazy(
-  () => import("@/pages/services/details/OilGasManagementPage"),
+  () => import("@/pages/services/details/oil-gas-management/OilGasManagementPage"),
 );
 const ProjectManagementExecutionPage = lazy(
-  () => import("@/pages/services/details/ProjectManagementExecutionPage"),
+  () => import("@/pages/services/details/project-management-execution/ProjectManagementExecutionPage"),
 );
 const Products = lazy(() => import("@/pages/products/Products"));
 const PolicyDetail = lazy(
