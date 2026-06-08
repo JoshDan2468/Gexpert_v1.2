@@ -10,7 +10,7 @@ type NavLink = {
   children?: NavLink[];
 };
 
-const serviceLinks = [
+const serviceLinks: NavLink[] = [
   {
     label: "Asset Integrity and Management",
     to: "/services/engineering-services",
@@ -67,7 +67,7 @@ const serviceLinks = [
       },
     ],
   },
-] as const;
+];
 
 const navLinks: NavLink[] = [
   { label: "Home", to: "/" },
@@ -96,6 +96,7 @@ const Navbar = () => {
   const [activeServiceGroup, setActiveServiceGroup] = useState<string | null>(
     null,
   );
+  const [openGroups, setOpenGroups] = useState<Record<string, boolean>>({});
 
   const isActiveLink = (link: NavLink) => {
     if (link.to === "/") {
@@ -139,14 +140,10 @@ const Navbar = () => {
             className='h-10 w-auto rounded-sm object-contain transition-colors sm:h-12 lg:h-14'
           />
           <div className='flex flex-col gap-1 leading-tight'>
-            <span
-              className='text-[10px] font-bold uppercase tracking-[0.1em] text-[#012402] transition-colors sm:text-[11px] lg:text-xs'
-            >
+            <span className='text-[10px] font-bold uppercase tracking-[0.1em] text-[#012402] transition-colors sm:text-[11px] lg:text-xs'>
               Global Expert
             </span>
-            <span
-              className='text-[8px] font-semibold uppercase tracking-[0.14em] text-[#012402]/75 transition-colors sm:text-[9px] lg:text-[11px]'
-            >
+            <span className='text-[8px] font-semibold uppercase tracking-[0.14em] text-[#012402]/75 transition-colors sm:text-[9px] lg:text-[11px]'>
               Consultoria
             </span>
           </div>
@@ -174,7 +171,9 @@ const Navbar = () => {
                   {link.children && <ChevronDown className='w-3 h-3' />}
                   <span
                     className={`absolute bottom-0 left-3 right-3 h-1 origin-left transition-transform ${
-                      isActive ? "scale-x-100" : "scale-x-0 group-hover:scale-x-100"
+                      isActive
+                        ? "scale-x-100"
+                        : "scale-x-0 group-hover:scale-x-100"
                     } bg-[#012402]`}
                   />
                 </Link>
@@ -296,10 +295,12 @@ const Navbar = () => {
             <div className='px-6 pb-6 space-y-1'>
               {navLinks.map((link) => {
                 const isActive = isActiveLink(link);
+                const hasChildren = Boolean(link.children?.length);
 
-                return (
-                  <div key={link.label}>
+                if (!hasChildren) {
+                  return (
                     <Link
+                      key={link.label}
                       to={link.to}
                       onClick={() => setMobileOpen(false)}
                       className={`block py-3 text-[12px] font-semibold uppercase tracking-[0.08em] transition-colors ${
@@ -310,35 +311,105 @@ const Navbar = () => {
                     >
                       {link.label}
                     </Link>
+                  );
+                }
 
-                    {link.children && (
-                      <div className='border-l border-[#012402]/15 pl-4'>
-                        {link.children.map((child) => (
-                          <div key={child.label}>
-                            <Link
-                              to={child.to}
-                              onClick={() => setMobileOpen(false)}
-                              className='block py-2 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#012402]/80 transition-colors hover:text-[#012402]'
-                            >
-                              {child.label}
-                            </Link>
+                return (
+                  <div key={link.label} className='space-y-1'>
+                    <button
+                      type='button'
+                      onClick={() =>
+                        setOpenGroups((prev) => ({
+                          ...prev,
+                          [link.label]: !prev[link.label],
+                        }))
+                      }
+                      aria-expanded={openGroups[link.label] ? "true" : "false"}
+                      className='flex w-full items-center justify-between py-3 text-left text-[12px] font-semibold uppercase tracking-[0.08em] text-[#012402]/90 transition-colors hover:text-[#012402]'
+                    >
+                      <span className={`${isActive ? "text-[#012402]" : ""}`}>
+                        {link.label}
+                      </span>
+                      <ChevronDown
+                        className={`w-4 h-4 transition-transform ${
+                          openGroups[link.label] ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
 
-                            {child.children && (
-                              <div className='border-l border-[#012402]/10 pl-4'>
-                                {child.children.map((nestedChild) => (
-                                  <Link
-                                    key={nestedChild.label}
-                                    to={nestedChild.to}
-                                    onClick={() => setMobileOpen(false)}
-                                    className='block py-2 text-sm text-[#012402]/70 transition-colors hover:text-[#012402]'
+                    {openGroups[link.label] && (
+                      <div className='space-y-1 border-l border-[#012402]/15 pl-4'>
+                        {link.children!.map((child) => {
+                          const childHasChildren = Boolean(
+                            child.children?.length,
+                          );
+                          const childIsActive = isActiveLink(child);
+
+                          return (
+                            <div key={child.label} className='space-y-1'>
+                              <div className='flex items-center justify-between gap-3'>
+                                {childHasChildren ? (
+                                  <button
+                                    type='button'
+                                    onClick={() =>
+                                      setOpenGroups((prev) => ({
+                                        ...prev,
+                                        [child.label]: !prev[child.label],
+                                      }))
+                                    }
+                                    aria-expanded={
+                                      openGroups[child.label] ? "true" : "false"
+                                    }
+                                    className={`flex-1 text-left py-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition-colors ${
+                                      childIsActive
+                                        ? "text-[#012402]"
+                                        : "text-[#012402]/80 hover:text-[#012402]"
+                                    }`}
                                   >
-                                    {nestedChild.label}
+                                    {child.label}
+                                  </button>
+                                ) : (
+                                  <Link
+                                    to={child.to}
+                                    onClick={() => setMobileOpen(false)}
+                                    className={`block py-2 text-[11px] font-semibold uppercase tracking-[0.08em] transition-colors ${
+                                      childIsActive
+                                        ? "text-[#012402]"
+                                        : "text-[#012402]/80 hover:text-[#012402]"
+                                    }`}
+                                  >
+                                    {child.label}
                                   </Link>
-                                ))}
+                                )}
+
+                                {childHasChildren && (
+                                  <ChevronDown
+                                    className={`w-4 h-4 transition-transform ${
+                                      openGroups[child.label]
+                                        ? "rotate-180"
+                                        : ""
+                                    }`}
+                                  />
+                                )}
                               </div>
-                            )}
-                          </div>
-                        ))}
+
+                              {childHasChildren && openGroups[child.label] && (
+                                <div className='space-y-1 border-l border-[#012402]/10 pl-4'>
+                                  {child.children!.map((nestedChild) => (
+                                    <Link
+                                      key={nestedChild.label}
+                                      to={nestedChild.to}
+                                      onClick={() => setMobileOpen(false)}
+                                      className='block py-2 text-sm text-[#012402]/70 transition-colors hover:text-[#012402]'
+                                    >
+                                      {nestedChild.label}
+                                    </Link>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                       </div>
                     )}
                   </div>
