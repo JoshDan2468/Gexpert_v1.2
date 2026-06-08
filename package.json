@@ -6,7 +6,7 @@
     "node": ">=18.0.0",
     "npm": ">=8.0.0"
   },
-  "homepage": "https://joshdan2468.github.io/globalexpert_website",
+  "homepage": "https://joshdan2468.github.io/Gexpert_v1.2/",
   "scripts": {
     "dev": "vite",
     "build": "npx vite build",
